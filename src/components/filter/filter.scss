@@ -1,0 +1,82 @@
+@import '../../style.scss';
+
+.filter {
+    @include themify($themes) {
+        display:flex;
+        margin: 20px 60px;
+        width: 100%;
+        @include mobile {
+            margin:0;
+        }
+        .container_filter {
+            display:flex;
+            width: 90%;
+            gap:10px;
+            @include mobile {
+                flex-direction: column;
+                width: 100%;
+                margin: 10px;
+            }
+            select {
+                display:flex;
+                height: 35px;
+                outline: none;
+                border:0px;
+                flex:1;
+                background: #001e28;
+                color: #fff;
+                border-radius: 3px;
+                padding-left: 10px;
+                cursor: pointer;
+                @include mobile {
+                    padding: 10px;
+                }
+            }
+            display:flex;
+            input {
+                flex:1;
+                background: #001e28;
+                color: #fff;
+                border-radius: 3px;
+                padding-left: 10px;
+                border: 0px;
+                outline: none;
+                cursor: pointer;
+                &::placeholder {
+                    color:#fff;
+                }
+                @include mobile {
+                    padding: 10px;
+                }
+            }
+            button {
+                background: #c80037;
+                border: 0;
+                color: #fff;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100px;
+                border-radius: 3px;
+                transition: 0.3s all cubic-bezier(0.215, 0.61, 0.355, 1);
+                cursor: pointer;
+                text-transform: uppercase;
+                gap:5px;
+                &:hover {
+                    transition: 0.3s ease-out;
+                    background: #c80037;
+                }
+                @include mobile {
+                    width: 100%;
+                }
+                svg {
+                    font-size: 20px;
+                }
+
+            }
+        }
+    }
+    
+
+}

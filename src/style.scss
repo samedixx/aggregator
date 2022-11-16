@@ -1,0 +1,97 @@
+$themes: (
+    light: (
+        textColor: #000,
+        bg: #f0f0f0,
+        logo: darkblue,
+        bgDark: #f6f3f3,
+        bgMed: #fff,
+        textColorSoft: #555,
+        border: #cacaca,
+        mainBg: teal,
+        textColorSecond: #fff,
+    ),
+    dark: (
+        textColor: whitesmoke,
+        bg: #001e28,
+        logo: #c80037,
+        bgDark: #010a0f,
+        bgMed: #00141e,
+        textColorSoft: lightgray,
+        border: #444,
+        mainBg: #c80037,
+        textColorSecond: #000,
+    ),
+);
+
+body {
+    margin:0;
+    padding:0;
+    overflow: hidden;
+}
+
+.home .casino .container .games_all .games_container .game:hover span {
+    display:flex!important;
+    transition: 0.3s ease-out;
+}
+
+.hidden {
+    display:none!important;
+}
+
+/* width */
+*::-webkit-scrollbar {
+    width: 10px;
+}
+
+  /* Track */
+*::-webkit-scrollbar-track {
+    background: #001e28;
+    width: 5px;
+}
+
+  /* Handle */
+*::-webkit-scrollbar-thumb {
+    background: #c80037;
+    border-radius: 5px;
+    width:5px;
+}
+
+  /* Handle on hover */
+*::-webkit-scrollbar-thumb:hover {
+    background: #c80037;
+}
+
+@mixin themify($themes) {
+    @each $theme, $map in $themes {
+        .theme-#{$theme} & {
+        $theme-map: () !global;
+        @each $key, $submap in $map {
+            $value: map-get(map-get($themes, $theme), "#{$key}");
+            $theme-map: map-merge(
+            $theme-map,
+            (
+                $key: $value,
+            )
+            ) !global;
+        }
+        @content;
+        $theme-map: null !global;
+        }
+    }
+}
+
+@function themed($key) {
+    @return map-get($theme-map, $key);
+}
+
+@mixin tablet {
+    @media (max-width:960px) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @media (max-width: 480px) {
+        @content;
+    }
+}

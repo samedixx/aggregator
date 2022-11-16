@@ -1,0 +1,105 @@
+@import '../../style.scss';
+
+.navbar {
+    
+    @include themify($themes) {
+        background: transparent;
+        position:sticky;
+        width: 100vw;
+        transition:0.4s all ease-in-out;
+        &.colored {
+            background: themed("bg");
+            transition:0.4s all ease-in-out;
+        }
+        .container {
+            display:flex;
+            align-items: center;
+            height: 60px;
+            justify-content: space-between;
+            padding: 0 20px;
+            .left{
+                @include mobile {
+                    width: 100%;
+                }
+                .logo {
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    color:#fff;
+                    @include mobile {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 100%;
+                    }
+                }
+            }
+            .right {
+                display:flex;
+                align-items: center; gap:10px;
+                button {
+                    background-color: transparent;
+                    border: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    svg {
+                        color:#fff;
+                    }
+                    @include tablet {
+                        display: none;
+                    }
+                }
+                .form {
+                    display:flex;
+                    align-items: center;
+                    gap:5px;
+                    @include mobile {
+                        display: none;
+                    }
+                    input {
+                        border:1px solid themed('border');
+                        height:30px;
+                        border-radius: 3px;
+                        padding: 0 10px;
+                        outline:none;
+                        border-radius:3px;
+                        background-color: themed('bgDark');
+                        color:#ddd;
+                        border:1px solid transparent;
+                        &:focus {
+                            border:1px solid teal;
+                            box-shadow: 0 0 5px teal;
+                        }
+                        @include tablet{
+                            max-width:100px;
+                        }
+                    }
+                    button {
+                        background: themed('mainBg');
+                        border:0;
+                        color:themed('textColor');
+                        height:32px;
+                        display:flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 100px;
+                        border-radius: 3px;
+                        transition:0.3s all cubic-bezier(0.215, 0.610, 0.355, 1);
+                        &:hover {
+                            background:transparent;
+                            color:teal;
+                            border: 1px solid teal;
+                            transition:0.3s all cubic-bezier(0.215, 0.610, 0.355, 1);
+                            font-weight: 600;
+                        }
+                        gap:5px;
+                        svg {
+                            font-size: 20px;
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+}
