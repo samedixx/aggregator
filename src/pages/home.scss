@@ -9,12 +9,14 @@
             .leftMenu {
                 display: flex;
                 flex-direction: column;
-                flex: 1;
+                flex: 1 1;
                 height: calc(100vh - 60px);
                 overflow-y: scroll;
-                background-color: themed("bgMed");
-                color:themed("textColor");
+                background-color: #00141e;
+                color: whitesmoke;
                 margin-top: 20px;
+                margin-left: 10px;
+                border-radius: 10px;
                 @include mobile {
                     display: none;
                 }
@@ -52,8 +54,9 @@
                     .box {
                         span {
                             display:flex;
-                            gap:5px;
+                            gap:10px;
                             font-size: 13px;
+                            align-items: center;
                         }
                         img {
                             min-width: 200px;

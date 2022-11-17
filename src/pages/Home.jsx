@@ -15,7 +15,7 @@ const Home = () => {
     const [giochi, setGiochi] = useState([])
     const [valueFilter, setValueFilter] = useState('')
     const [valueSearch, setValueSearch] = useState('')
-    const [categoryPage, setCategoryPage] = useState('Casino')
+    const [categoryPage, setCategoryPage] = useState('')
     const [isLoading, setIsLoading] = useState(true)
     
     // VARIABLES
@@ -34,6 +34,7 @@ const Home = () => {
             //console.log('get axios request games list -->' , response.data.games)
             setGiochi(response.data.games)
             setIsLoading(false)
+            setCategoryPage('Casino')
         })
     }, [])
 
