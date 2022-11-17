@@ -154,7 +154,8 @@ const Home = () => {
 
                 <div className="container">
                     <div className="banner_container">
-                        <img src="https://bonanza365.me/frontend/Default/img/carousel/1_new.png" alt="" />
+                        <img style={{border:'0', height:'350x', width:'705px'}} src="https://alena-ca.com/wp-content/uploads/2022/10/01_logo_cashnoire.png" alt="" />
+                        
                     </div>
                     <Filter providersx={filteredProviders} filterValueSelected={onProviderSelected} searchValueSelected={onSearchValue} categoryPageValue={handleCategory} />
                     <div className="games_all">
