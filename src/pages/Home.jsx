@@ -6,13 +6,17 @@ import Filter from '../components/filter/Filter'
 import DiamondIcon from '@mui/icons-material/Diamond';
 import CasinoIcon from '@mui/icons-material/Casino';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+
 
 const Home = () => {
     // STATES
     const [giochi, setGiochi] = useState([])
-    const [valueFilter, setValueFilter] = useState('netent')
+    const [valueFilter, setValueFilter] = useState('')
     const [valueSearch, setValueSearch] = useState('')
     const [categoryPage, setCategoryPage] = useState('Casino')
+    const [isLoading, setIsLoading] = useState(true)
     
     // VARIABLES
     const excludedProviders = ['texinho', 'virtual1x2']
@@ -29,55 +33,50 @@ const Home = () => {
         axios.get('https://media.betall360.me/site/commons/js/gameList.json').then((response) => {
             //console.log('get axios request games list -->' , response.data.games)
             setGiochi(response.data.games)
+            setIsLoading(false)
         })
     }, [])
 
     // FILTER & PUSH PROVIER
-    for(let i = 0; i < giochi.length; i++) {
-        var provider = giochi[i].GAME_GROUP.toString().toLowerCase().replace('_desktop', '').replace('_mobile', '') ;
-        //console.log(provider)
-        
-        if(providers.indexOf(provider) === -1){
-            if(excludedProviders.indexOf(provider !== -1)){
-                
-                    
+    if(giochi.length > 0) {
+        for(let i = 0; i < giochi.length; i++) {
+            var provider = giochi[i].GAME_GROUP.toString().toLowerCase().replace('_desktop', '').replace('_mobile', '') ;
+            //console.log(provider)
+            if(providers.indexOf(provider) === -1){
+                if(excludedProviders.indexOf(provider) === -1) {
                     providers.push(provider)
-                
+                }
             }
         }
     }
 
     // Games List MANAGER
-    var filteredGamesList =  giochi.filter((game) => {
-        if(game.IS_MOBILE === 0) {
-            if(readyGames.indexOf(game.GAME_NAME.toString().toLowerCase()) === -1) {
-            console.log('check game ==>',game)
-            // se valueSearch non è definito
-                if(valueSearch === '') {
-                    
-                    // filter by provider
-                    if(valueFilter === game.GAME_GROUP.toString().toLowerCase().replace('_desktop', '').replace('_mobile', '')) {
-                        return game.GAME_GROUP.toString().toLowerCase().replace('_desktop', '').replace('_mobile', '') === valueFilter
-                    } else if (valueFilter === "All") {
-                        return game
+    
+        var filteredGamesList =  giochi.filter((game) => {
+            if(game.IS_MOBILE === 0) {
+                if(readyGames.indexOf(game.GAME_NAME.toString().toLowerCase()) === -1) {
+                //console.log('check game ==>',game)
+                // se valueSearch non è definito
+                    if(valueSearch === '') {
+                        // filter by provider
+                        if(valueFilter === game.GAME_GROUP.toString().toLowerCase().replace('_desktop', '').replace('_mobile', '')) {
+                            return game
+                        } else if (valueFilter === "All") {
+                            return game
+                        }
+                    } else if (valueSearch !== '') {
+                        if(game.GAME_NAME.toString().toLowerCase().includes(valueSearch.toLowerCase())) {
+                            return game
+                        }
+                    } else if (categoryPage === 'Casino') {
+                        //TODO
                     }
-                } else if (valueSearch !== '') {
-                    if(game.GAME_NAME.toString().toLowerCase().includes(valueSearch.toLowerCase())) {
-                        
-                        return game
-                        
-                    }
-                } else if (categoryPage === 'Casino') {
-                    //TODO
-                    
-                    
-        
+                    readyGames.push(game.GAME_NAME.toString().toLowerCase())
                 }
-                readyGames.push(game.GAME_NAME.toString().toLowerCase())
             }
+        })
+    
 
-        }
-    })
 
     var filteredProviders = providers.filter((provider) => {
         if(categoryPage === 'Casino') {
@@ -99,9 +98,9 @@ const Home = () => {
         setValueFilter(filteredProviders[0])
     }, [categoryPage])
 
-    console.log('check readygames -->', readyGames)
-    console.log('check giochi -->', giochi)
-    console.log('check filteredGameList -->', filteredGamesList)
+    //console.log('check readygames -->', readyGames)
+    //console.log('check giochi -->', giochi)
+    //console.log('check filteredGameList -->', filteredGamesList)
 
     const handleClick = (event) => {
         event.preventDefault()
@@ -122,18 +121,23 @@ const Home = () => {
     }
     console.log('check category page value --> ', categoryPage)
     
+    
     return (
         <div className='home'>
             <div className="casino">
                 <div className="leftMenu">
                     <div className="providers_title">
-                        <AutoStoriesIcon /> Providers ({providers.length})
+                        <AutoStoriesIcon /> Providers ({isLoading ? providers.length : "0"})
                     </div>
                     <div className="providers">
                     {
-                        filteredProviders.map((provider, key) => {
+                        providers.map((provider, key) => {
                             return (
-                                <div className={`provider ${provider.toLowerCase().replace(' ', '').replace(' ', '')}`} onClick={handleClick} data-provider={`provider-${provider.toLowerCase().replace(' ', '').replace(' ', '')}`} key={key}>
+                                <div  
+                                className={`provider`} 
+                                onClick={(e) => setValueFilter(`${provider}`)}  
+                                
+                                key={key}>
                                     <div className="box">
                                         <span>
                                             <DiamondIcon />
@@ -163,26 +167,26 @@ const Home = () => {
                                 </span>
                                 <img src={`//media.betall360.me/site/commons/img/providersNEW/${valueFilter}.png`} alt=""/>
                             </div>
-                            
                         </div>
                         <div className="games_container">
                             {
-                                filteredGamesList.map((game, key) => {
-                                    return (
-                                        <div className='game' data-provider={game.GAME_GROUP} key={key}>
-                                            <img 
-                                            src={`${game.IMG_PATH}`}
-                                            onError={(e) =>
-                                                
-                                                    (e.target.src =`${game.IMG_PATH.replace('.jpg', '.png')}`)
-                                            }
-                                            alt="" />
-                                            <span>{game.GAME_NAME}</span>
-                                            
-                                        </div>
-                                    )
-                                })
-                            }
+                                !isLoading 
+                                    ?   filteredGamesList.map((game, key) => {
+                                            return (
+                                                <div className='game' data-provider={game.GAME_GROUP} key={key}>
+                                                    <img 
+                                                    src={`//media.betall360.me/site/games/${game.IMG_PATH}`}
+                                                    onError={(e) =>
+                                                        (e.target.src =`//media.betall360.me/site/games/${game.IMG_PATH.replace('.jpg', '.png')}`)
+                                                    }
+                                                    alt="" />
+                                                    <span>{game.GAME_NAME}</span>
+                                                    
+                                                </div>
+                                        )
+                                        })
+                                    :   <Box sx={{ display: 'flex' }}><CircularProgress /></Box>
+                                }
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ import { useContext,  useState, useEffect } from "react"
 import { DarkModeContext } from "./context/darkModeContext"
 import Navbar from "./components/navbar/Navbar"
 import Login from "./pages/Login"
+import Casino from "./pages/Casino"
 
 function App() {
 
@@ -15,9 +16,10 @@ function App() {
 
 
   const ProtectedRoute = ({children}) => {
-    if(!currentUser){
+    console.log('protected route check ', currentUser)
+    if(currentUser === null){
       return <Navigate to="/login" />
-    } 
+    }
     return children
   }
 
@@ -37,13 +39,7 @@ function App() {
     )
   }
 
-  const handleLogin = (dataLogin) => {
-    setCurrentUser(dataLogin)
-  }
   console.log(currentUser, 'check current user')
-
-
-
 
   const router = createBrowserRouter([
     {
@@ -59,8 +55,12 @@ function App() {
     },
     {
       path: '/login',
-      element: <Login handleLogin={handleLogin}/>,
+      element: <Login />,
     },
+    {
+      path: '/casino',
+      element: <Casino />
+    }
   ]);
 
   return (

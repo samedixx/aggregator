@@ -24,7 +24,7 @@
                 .logo {
                     text-transform: uppercase;
                     font-weight: bold;
-                    color:#fff;
+                    color:themed('logo');
                     @include mobile {
                         display: flex;
                         align-items: center;
@@ -43,7 +43,7 @@
                     align-items: center;
                     justify-content: center;
                     svg {
-                        color:#fff;
+                        color:themed('textColor');
                     }
                     @include tablet {
                         display: none;

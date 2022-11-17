@@ -4,43 +4,33 @@ import { DarkModeContext } from '../context/darkModeContext'
 import EarbudsIcon from '@mui/icons-material/Earbuds';
 import KeyIcon from '@mui/icons-material/Key';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Navigate } from 'react-router-dom'
+import { Link, useNavigate } from "react-router-dom"
+import { AuthContext } from "../context/authContext"
 
-const Login = ({handleLogin}) => {
-    const {darkMode} = useContext(DarkModeContext)
-    const [user, setUser] = useState({
-        username:'',
-        password:''
+
+const Login = () => {
+    const [inputs, setInputs] = useState({
+        username:"",
+        password:""
     })
-    const [error, setError] = useState(null)
-    const [success, setSucces] = useState(null)
-    const [loginSuccess, setLoginSuccess] = useState(false)
+    const { toggle, darkMode } = useContext(DarkModeContext)
 
-    const handleChange = (event) => {
-        setUser(prev => ({...prev, [event.target.name]:event.target.value}))
+    const navigate = useNavigate()
+    const [err, setErr] = useState(null)
+    const handleChange = (e) => {
+        setInputs(prev => ({...prev, [e.target.name]:e.target.value}))
     }
+    const { login } = useContext(AuthContext)
+    console.log(inputs)
 
-    console.log(user)
-    const handleClick = (e) => {
-        e.preventDefault()
-        console.log(user)
-        if(user.username !== "admin" && user.password !== "root") {
-            setError('Something went wrong')
-        } else if ((user.username === "admin" && user.password === "root")) {
-            handleLogin(true)
-            localStorage.setItem("user", JSON.stringify(user));
-            setSucces("Login success!")
-            setLoginSuccess(true)
-            goToHome()
-        } else {
-            setError('Something went wrong')
-        }
-    }
-
-    const goToHome = () => {
-        console.log('far from home...')
-        if(loginSuccess) {
-            return <Navigate to="/" />
+    const handleLogin = async (e) => {
+        try {
+            e.preventDefault()
+            await login(inputs)
+            navigate('/')
+        } catch (err) {
+            console.log(err)
+            setErr(err.response.data)
         }
     }
 
@@ -58,11 +48,10 @@ const Login = ({handleLogin}) => {
                     </div>
                     <div className="password">
                         <KeyIcon />
-                        <input name="password" type="password" placeholder='password' onChange={handleChange} />
+                        <input name="password" type="password" placeholder='password'  onChange={handleChange}/>
                     </div>
-                    { error && <span className="error">{error}</span>}
-                    { success && <span className="success">{success}</span>}
-                    <button onClick={handleClick} >Login</button>
+                    {err && <span>{err}</span>}
+                    <button onClick={handleLogin}>Login</button>
                 </div>
             </div>
         </div>
