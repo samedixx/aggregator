@@ -13,20 +13,17 @@ const Home = () => {
     const [valueFilter, setValueFilter] = useState('netent')
     const [valueSearch, setValueSearch] = useState('')
     const [categoryPage, setCategoryPage] = useState('Casino')
+    
     // VARIABLES
     const excludedProviders = ['texinho', 'virtual1x2']
     const providers = []
     const readyGames = []
-    // CASINO ARRAYS
-
-    var array_casino_live = ['aviator', 'hollywoodtv', 'creedroomz', 'ezugi', 'xpg', '7mojos live', 'sagaming', 'ebet', 'absolute live gaming', 'evolution', 'vivo', 'evolutionlivecasino', 'ezugi', 'portomaso', 'betgamestv', 'live168', 'liveg24'];
-
-    var array_virtual = ['fiablegames', 'spribe', 'virtual generation', 'edgevirtuals', 'racing', 'multigames', 'kiron', 'goldenrace', '1x2virtual', 'virtualgeneration', 'virtual_1x2'];
-
-    var array_casino_gold = ['1x2', 'bbtech ', 'superlotto', 'booongo', 'pgsoft', 'espresso', '7mojos slots', 'bet2tech', 'funta gaming', 'gamzix', 'felix', 'games inc', 'triplecherry', 'simpleplay', 'netgame', 'allwayspin', 'green jade', 'kalamba', 'tpg', 'caleta', 'charismatic', 'bgaming', 'betsolutions', 'mrslotty', 'truelab', 'evoplay', 'irondog', 'fugaso', 'boominggames', 'endorphina', 'feltgaming', 'nolimit', 'boongo', 'eagaming', 'apollo', 'augustgaming', 'casino_technology', 'fazi', 'justplay', 'kagaming', 'onetouch', 'playpearls', 'spinmatic', 'superspade', 'tomhorn', 'wearecasino', 'woohoo', 'pragmatic', 'betsoft', 'novomatic', 'egt', 'playngo', 'amatic', 'netent', 'merkur', 'quickspin', 'wazdan', 'bomba', 'aristocrat', '1x2', 'gameart', 'habanero', 'igrosoft', 'irondog', 'isoftbet', 'leapgaming', 'platipus', 'playson', 'red_rake', 'skywind', 'spinomenal', 'xplosive', 'yggdrasil'];
- 
     
-    // END CASINO ARRAYS
+    // CASINO ARRAYS
+    var array_casino_live = ['aviator', 'hollywoodtv', 'creedroomz', 'ezugi', 'xpg', '7mojos live', 'sagaming', 'ebet', 'absolute live gaming', 'evolution', 'vivo', 'evolutionlivecasino', 'ezugi', 'portomaso', 'betgamestv', 'live168', 'liveg24'];
+    var array_virtual = ['fiablegames', 'spribe', 'virtual generation', 'edgevirtuals', 'racing', 'multigames', 'kiron', 'goldenrace', '1x2virtual', 'virtualgeneration', 'virtual_1x2'];
+    var array_casino_gold = ['1x2', 'bbtech ', 'superlotto', 'booongo', 'pgsoft', 'espresso', '7mojos slots', 'bet2tech', 'funta gaming', 'gamzix', 'felix', 'games inc', 'triplecherry', 'simpleplay', 'netgame', 'allwayspin', 'green jade', 'kalamba', 'tpg', 'caleta', 'charismatic', 'bgaming', 'betsolutions', 'mrslotty', 'truelab', 'evoplay', 'irondog', 'fugaso', 'boominggames', 'endorphina', 'feltgaming', 'nolimit', 'boongo', 'eagaming', 'apollo', 'augustgaming', 'casino_technology', 'fazi', 'justplay', 'kagaming', 'onetouch', 'playpearls', 'spinmatic', 'superspade', 'tomhorn', 'wearecasino', 'woohoo', 'pragmatic', 'betsoft', 'novomatic', 'egt', 'playngo', 'amatic', 'netent', 'merkur', 'quickspin', 'wazdan', 'bomba', 'aristocrat', '1x2', 'gameart', 'habanero', 'igrosoft', 'irondog', 'isoftbet', 'leapgaming', 'platipus', 'playson', 'red_rake', 'skywind', 'spinomenal', 'xplosive', 'yggdrasil'];
+
     // GAME LIST REQUEST
     useEffect(() => {
         axios.get('https://media.betall360.me/site/commons/js/gameList.json').then((response) => {
@@ -34,6 +31,7 @@ const Home = () => {
             setGiochi(response.data.games)
         })
     }, [])
+
     // FILTER & PUSH PROVIER
     for(let i = 0; i < giochi.length; i++) {
         var provider = giochi[i].GAME_GROUP.toString().toLowerCase().replace('_desktop', '').replace('_mobile', '') ;
@@ -47,17 +45,13 @@ const Home = () => {
                 
             }
         }
-
     }
 
- 
-
-
-    console.log('array casino live ', array_casino_live)
     // Games List MANAGER
     var filteredGamesList =  giochi.filter((game) => {
         if(game.IS_MOBILE === 0) {
             if(readyGames.indexOf(game.GAME_NAME.toString().toLowerCase()) === -1) {
+            console.log('check game ==>',game)
             // se valueSearch non è definito
                 if(valueSearch === '') {
                     
@@ -75,10 +69,7 @@ const Home = () => {
                     }
                 } else if (categoryPage === 'Casino') {
                     //TODO
-                    // if is not found
-                    if(valueFilter === game.GAME_GROUP.toString().toLowerCase().replace('_desktop', '').replace('_mobile', '')) {
-                        return game
-                    } 
+                    
                     
         
                 }
@@ -109,6 +100,8 @@ const Home = () => {
     }, [categoryPage])
 
     console.log('check readygames -->', readyGames)
+    console.log('check giochi -->', giochi)
+    console.log('check filteredGameList -->', filteredGamesList)
 
     const handleClick = (event) => {
         event.preventDefault()
